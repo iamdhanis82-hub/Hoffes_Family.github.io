@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoffes Family Presents</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #FFCCFF;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #EEEEEE;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 1.5s ease-out;
+        }
+
+        #intro-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #countdown-display {
+            font-size: 6em;
+            font-weight: bold;
+            color: #ffe082;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
+            transform: scale(1);
+            opacity: 1;
+            animation: popOut 0.8s ease-out forwards;
+        }
+
+        @keyframes popOut {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #countdown-display.final-message {
+            font-size: 5em;
+            color: #00bcd4;
+            animation: finalPulse 1s infinite alternate;
+        }
+
+        @keyframes finalPulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            transform: scale(0) rotate(0deg);
+            opacity: 0;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            min-height: 400px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+            
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            gap: 30px;
+        }
+
+        body.show-content .container {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .text-content {
+            flex: 1;
+            text-align: left;
+            max-width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            color: #ffe082;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.2;
+        }
+        h2{
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #ffe082;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        p {
+            font-size: 1.4em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #FFFFFF;
+        }
+
+        .hidden-text {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            margin-bottom: 0;
+        }
+
+        .hidden-text:first-of-type {
+            margin-top: 0;
+        }
+
+        .hidden-text + .hidden-text {
+            margin-top: 15px;
+        }
+
+        .birthday-image {
+            max-width: 45%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .sender-signature {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 0.8em;
+            font-style: italic;
+            color: black;
+            white-space: nowrap;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: bubbleUp 10s infinite ease-in forwards;
+            pointer-events: none;
+        }
+
+        @keyframes bubbleUp {
+            0% { transform: translateY(0); opacity: 0.6; }
+            100% { transform: translateY(-1000px); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 20px;
+                max-width: 95%;
+            }
+
+            .text-content,
+            .birthday-image {
+                max-width: 100%;
+                margin-right: 0;
+            }
+
+            .birthday-image {
+                margin-top: 20px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            p {
+                font-size: 1.2em;
+            }
+
+            #countdown-display {
+                font-size: 4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="intro-overlay">
+        <div id="countdown-display"></div>
+    </div>
+
+    <div class="container">
+        <div class="text-content">
+            <h2>🎉 Barakallah Fii Umrik Papa 🎉</h2>
+            <p class="hidden-text">Terima kasih papa atas semua yang telah papa berikan kepada kami.</p>
+            <p class="hidden-text">dan Papa Selalu Bahagia dan Sehat Selalu, Aamiin.. </p>
+            <p class="hidden-text">Semoga Papa selalu dalam lindungan Allah dan awet muda..</p>
+        </div>
+        
+        <img src="/papa.jpg" alt="Hoffes Family" class="birthday-image">
+
+        <p class="sender-signature">From HOFFES FAMILY with love</p>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const introOverlay = document.getElementById('intro-overlay');
+            const countdownDisplay = document.getElementById('countdown-display');
+            const countdownMessages = ["1", "2", "3", "🎂🎂🎂"];
+            let currentIndex = 0;
+
+            const confettiColors = ['#FFD700', '#FF4500', '#ADFF2F', '#00BFFF', '#EE82EE', '#FF6347', '#FF1493', '#32CD32'];
+
+            const bubbleColors = [
+                '#ADD8E6',
+                '#87CEEB',
+                '#90EE90',
+                '#98FB98',
+                '#FFD700',
+                '#FFA07A',
+                '#FFB6C1',
+                '#FFC0CB',
+                '#EE82EE',
+                '#DDA0DD',
+                '#F0E68C',
+                '#FFE4B5'
+            ];
+
+            function updateCountdown() {
+                if (currentIndex < countdownMessages.length - 1) {
+                    countdownDisplay.textContent = countdownMessages[currentIndex];
+                    countdownDisplay.style.animation = 'none';
+                    void countdownDisplay.offsetWidth;
+                    countdownDisplay.style.animation = 'popOut 0.8s ease-out forwards';
+                    currentIndex++;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownDisplay.textContent = countdownMessages[countdownMessages.length - 1];
+                    countdownDisplay.classList.add('final-message');
+                    countdownDisplay.style.animation = 'none';
+                    void countdownDisplay.offsetWidth;
+                    countdownDisplay.style.animation = 'finalPulse 1s infinite alternate';
+
+                    createConfetti(300);
+
+                    setTimeout(showMainContent, 1500);
+                }
+            }
+
+            function createConfetti(numConfetti) {
+                for (let i = 0; i < numConfetti; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+
+                    const startX = Math.random() * window.innerWidth;
+                    confetti.style.left = `${startX}px`;
+                    confetti.style.top = `${window.innerHeight}px`;
+
+                    const size = Math.random() * 12 + 6;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    
+                    confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    
+                    const styleSheet = document.styleSheets[0];
+                    const animationName = `confetti-anim-${Date.now()}-${i}`;
+                    
+                    const peakY = Math.random() * (window.innerHeight * 0.7) + (window.innerHeight * 0.1);
+                    const endY = window.innerHeight + 50;
+                    const endX = Math.random() * window.innerWidth;
+                    const rotation = Math.random() * 360 * 5;
+
+                    const duration = Math.random() * 4 + 3;
+                    const delay = Math.random() * 1;
+
+                    const rule = `@keyframes ${animationName} {
+                        0% { transform: translate(0px, 0px) scale(0) rotate(0deg); opacity: 1; }
+                        20% { transform: translate(${endX - startX}px, ${peakY - window.innerHeight}px) scale(1) rotate(${rotation}deg); opacity: 1; }
+                        100% { transform: translate(${endX - startX}px, ${endY - window.innerHeight}px) scale(0.8) rotate(${rotation + 180}deg); opacity: 0; }
+                    }`;
+                    styleSheet.insertRule(rule, styleSheet.cssRules.length);
+                    confetti.style.animation = `${animationName} ${duration}s ${delay}s forwards`;
+                    
+                    introOverlay.appendChild(confetti);
+
+                    confetti.addEventListener('animationend', () => {
+                        confetti.remove();
+                    });
+                }
+            }
+
+            function showMainContent() {
+                introOverlay.classList.add('fade-out');
+                introOverlay.addEventListener('transitionend', () => {
+                    introOverlay.style.display = 'none';
+                    document.body.classList.add('show-content');
+                    revealTextSequentially();
+                }, { once: true });
+            }
+
+            function revealTextSequentially() {
+                const textParagraphs = document.querySelectorAll('.text-content p.hidden-text');
+                let delay = 500;
+
+                textParagraphs.forEach((p, index) => {
+                    setTimeout(() => {
+                        p.classList.remove('hidden-text');
+                    }, delay);
+                    delay += 1000;
+                });
+            }
+
+            const countdownInterval = setInterval(updateCountdown, 1000);
+            updateCountdown();
+
+            function createBubble() {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                const size = Math.random() * 60 + 20;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${Math.random() * 100}%`;
+                bubble.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                bubble.style.animationDelay = `${Math.random() * 3}s`;
+                
+                bubble.style.backgroundColor = bubbleColors[Math.floor(Math.random() * bubbleColors.length)];
+                
+                document.body.appendChild(bubble);
+
+                bubble.addEventListener('animationend', () => {
+                    bubble.remove();
+                });
+            }
+
+            for (let i = 0; i < 20; i++) {
+                createBubble();
+            }
+            setInterval(createBubble, 1000);
+        });
+    </script>
+</body>
+</html>
